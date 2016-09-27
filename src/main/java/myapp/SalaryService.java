@@ -5,9 +5,17 @@ import java.util.List;
 
 class SalaryService {
 
-    public static final int HOUR_SALARY = 10;
     public static final int POSSIBLE_WORKING_HOURS = 20;
+    private final HourValueProvider hourValueProvider;
     private List<SalaryCalculatorListener> listeners = new ArrayList<>();
+
+    public SalaryService(HourValueProvider provider) {
+        this.hourValueProvider = provider;
+    }
+
+    public SalaryService() {
+        this(new D1HourValueProvider());
+    }
 
     public int calculate(int workingHours) {
         if (workingHours > POSSIBLE_WORKING_HOURS)
@@ -22,7 +30,7 @@ class SalaryService {
     }
 
     private int salaryFor(int hours) {
-        return hours * HOUR_SALARY;
+        return hours * hourValueProvider.getValue();
     }
 
     private int standardHoursFrom(int hours) {

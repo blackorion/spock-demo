@@ -41,4 +41,16 @@ class SalaryServiceSpec extends Specification {
         1 * mockBoss.notifySystemHacked(21)
     }
 
+    def "should calculate salary based on strategy"() {
+        setup:
+        HourValueProvider provider = Mock()
+        provider.getValue() >> 100
+        service = new SalaryService(provider)
+
+        when:
+        def salary = service.calculate(8)
+
+        then:
+        salary == 800
+    }
 }
