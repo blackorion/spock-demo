@@ -1,6 +1,7 @@
 package myapp
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class SalaryServiceSpec extends Specification {
     SalaryService service = new SalaryService()
@@ -13,19 +14,19 @@ class SalaryServiceSpec extends Specification {
         salary == 0
     }
 
-    def "should return 80 when worked 8 hours"() {
+    @Unroll
+    def "should return #expectedSalary when worked #workingHours hours"() {
         when:
-        def salary = service.calculate(8)
+        def salary = service.calculate(workingHours)
 
         then:
-        salary == 80
+        salary == expectedSalary
+
+        where:
+        workingHours | expectedSalary
+        8            | 80
+        10           | 110
+        20           | 260
     }
 
-    def "should return 110 when worked 10 hours"() {
-        when:
-        def salary = service.calculate(10)
-
-        then:
-        salary == 110
-    }
 }
