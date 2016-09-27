@@ -1,5 +1,6 @@
 package myapp;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,30 +18,30 @@ class SalaryService {
         this(new D1HourValueProvider());
     }
 
-    public int calculate(int workingHours) {
+    public BigDecimal calculate(int workingHours) {
         if (workingHours > POSSIBLE_WORKING_HOURS)
             notifyListeners(workingHours);
 
         return salaryFor(standardHoursFrom(workingHours))
-                + salaryFor(overtimeHoursFrom(workingHours));
+                .add(salaryFor(overtimeHoursFrom(workingHours)));
     }
 
     private void notifyListeners(int workingHours) {
         listeners.forEach(l -> l.notifySystemHacked(workingHours));
     }
 
-    private int salaryFor(int hours) {
-        return hours * hourValueProvider.getValue();
+    private BigDecimal salaryFor(float hours) {
+        return hourValueProvider.getValue().multiply(BigDecimal.valueOf(hours));
     }
 
     private int standardHoursFrom(int hours) {
         return hours > 8 ? 8 : hours;
     }
 
-    private int overtimeHoursFrom(int hours) {
-        int overtime = hours > 8 ? hours - 8 : 0;
+    private float overtimeHoursFrom(int hours) {
+        float overtime = hours > 8 ? hours - 8 : 0;
 
-        return (int) (overtime * 1.5);
+        return overtime * 1.5f;
     }
 
     public void addListener(SalaryCalculatorListener listener) {

@@ -1,5 +1,7 @@
 package myapp;
 
+import java.math.BigDecimal;
+
 public interface HourValueProvider {
-    int getValue();
+    BigDecimal getValue();
 }
