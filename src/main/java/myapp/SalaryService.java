@@ -1,5 +1,6 @@
 package myapp;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,16 +8,10 @@ import java.util.List;
 class SalaryService {
 
     public static final int POSSIBLE_WORKING_HOURS = 20;
-    private final HourValueProvider hourValueProvider;
     private List<SalaryCalculatorListener> listeners = new ArrayList<>();
 
-    public SalaryService(HourValueProvider provider) {
-        this.hourValueProvider = provider;
-    }
-
-    public SalaryService() {
-        this(new D1HourValueProvider());
-    }
+    @Resource
+    private HourValueProvider hourValueProvider;
 
     public BigDecimal calculate(int workingHours) {
         if (workingHours > POSSIBLE_WORKING_HOURS)

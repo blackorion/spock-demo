@@ -1,10 +1,20 @@
 package myapp
 
+import com.blogspot.toomuchcoding.spock.subjcollabs.Collaborator
+import com.blogspot.toomuchcoding.spock.subjcollabs.Subject
 import spock.lang.Specification
 import spock.lang.Unroll
 
 class SalaryServiceSpec extends Specification {
-    SalaryService service = new SalaryService()
+    @Collaborator
+    HourValueProvider provider = Mock()
+
+    @Subject
+    SalaryService service
+
+    void setup() {
+        provider.getValue() >> 10
+    }
 
     def "should return zero when no working hours"() {
         when:
@@ -45,7 +55,7 @@ class SalaryServiceSpec extends Specification {
         setup:
         HourValueProvider provider = Mock()
         provider.getValue() >> 100
-        service = new SalaryService(provider)
+        service.hourValueProvider = provider
 
         when:
         def salary = service.calculate(8)
