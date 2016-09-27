@@ -29,4 +29,16 @@ class SalaryServiceSpec extends Specification {
         20           | 260
     }
 
+    def "should notify boss when entering more then 20 hours"() {
+        setup:
+        SalaryCalculatorListener mockBoss = Mock()
+        service.addListener(mockBoss)
+
+        when:
+        service.calculate(21)
+
+        then:
+        1 * mockBoss.notifySystemHacked(21)
+    }
+
 }
