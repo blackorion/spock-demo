@@ -1,0 +1,6 @@
+package myapp;
+
+class SalaryService {
+
+}
+
